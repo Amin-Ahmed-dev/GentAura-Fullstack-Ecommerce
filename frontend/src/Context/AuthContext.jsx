@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 
     // Logout
     const logout = async () => {
-        const isConfirmed = await confirmAction("Sign Out", "Are you sure you want to end your session?");
+        const isConfirmed = await confirmAction("Logout", "Are you sure you want to end your session?");
 
         if (isConfirmed) {
             localStorage.removeItem('gentaura_token')

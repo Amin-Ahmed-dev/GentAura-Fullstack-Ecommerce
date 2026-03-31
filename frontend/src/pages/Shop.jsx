@@ -80,12 +80,14 @@ function Shop() {
                                 filteredProducts.length > 0 ? (
                                     filteredProducts.map(product => {
                                         const imagesArray = JSON.parse(product.images)
+                                        const sizesArray = JSON.parse(product.sizes)
 
                                         return (
                                             <ProductCard 
                                                 key={product.id}
                                                 id={product.id}
                                                 image={imagesArray[0]}
+                                                sizes={sizesArray}
                                                 title={product.name}
                                                 category={product.category}
                                                 price={product.price}

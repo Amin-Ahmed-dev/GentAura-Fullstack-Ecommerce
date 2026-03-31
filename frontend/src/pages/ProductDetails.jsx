@@ -9,7 +9,7 @@ import axios from 'axios'
 import { LuShoppingBag, LuHeart, LuRotateCcw, LuShieldCheck } from "react-icons/lu";
 import PageHeader from '../components/PageHeader'
 import ProductDetailsSkeleton from '../components/ProductDetailsSkeleton';
-import { confirmAction } from '../utils/alertService';
+import { confirmAction, showError } from '../utils/alertService';
 
 function ProductDetails() {
     const navigate = useNavigate();
@@ -83,6 +83,11 @@ function ProductDetails() {
             return
         }
 
+        if (!selectedSize) {
+            showError("Selection Required", "Please select a size first.");
+            return;
+        }
+
         const cartItem = {
             id: product.id,
             title: product.title,
@@ -91,9 +96,7 @@ function ProductDetails() {
             image: product.images[0]
         }
 
-        const finalSize = selectedSize ? selectedSize : "One Size"
-
-        addToCart(cartItem, finalSize)
+        addToCart(cartItem, selectedSize)
     }
     
     // Handle Add To Wishlist
