@@ -139,7 +139,11 @@ function Login() {
 
                                             <div className='input-icon d-flex align-items-center justify-content-center'>
                                                 <button
-                                                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                                                    type='button'
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        setIsPasswordVisible(!isPasswordVisible)
+                                                    }}
                                                 >
                                                     {
                                                         isPasswordVisible ? <LuEye size={22} /> : <LuEyeOff size={22} />

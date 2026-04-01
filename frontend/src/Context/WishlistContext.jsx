@@ -1,22 +1,37 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import { showToast } from '../utils/alertService';
+import { AuthContext } from './AuthContext';
 
 export const WishlistContext = createContext();
 
 export const WishlistProvider = ({ children }) => {
-    // Wishlist State
-    const [wishlist, setWishlist] = useState(() => {
-        const savedWishlist = localStorage.getItem('gentaura_wishlist')
-        return savedWishlist ? JSON.parse(savedWishlist) : []
-    })
+    const { user, isLoggedIn } = useContext(AuthContext);
+    const [wishlist, setWishlist] = useState([]);
+
+    // A User-Specific Key
+    const wishlistKey = user ? `gentaura_wishlist_${user.id}` : null
 
     // Wishlist LocalStorage
     useEffect(() => {
-        localStorage.setItem('gentaura_wishlist', JSON.stringify(wishlist))
-    }, [wishlist])
+        if (isLoggedIn && wishlistKey) {
+            const savedData = localStorage.getItem(wishlistKey);
+            setWishlist(savedData ? JSON.parse(savedData) : []);
+        } else {
+            setWishlist([]);
+        }
+    }, [isLoggedIn, wishlistKey]);
+
+    // Save Wishlist Data
+    useEffect(() => {
+        if (isLoggedIn && wishlistKey) {
+            localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+        }
+    }, [wishlist, isLoggedIn, wishlistKey]);
 
     // Toggle Wishlist
     const toggleWishlist = (product) => {
+        if (!isLoggedIn) return;
+
         const existingItem = wishlist.find((item) => item.id === product.id);
 
         if (existingItem) {
@@ -32,11 +47,13 @@ export const WishlistProvider = ({ children }) => {
 
     // Check if item is in wishlist 
     const isInWishlist = (productId) => {
+        if (!isLoggedIn) return false;
+
         return wishlist.some(item => item.id === productId);
     };
 
-    // Wishlsit Counter
-    const wishlistCounter = wishlist.length;
+    // Wishlist Counter
+    const wishlistCounter = isLoggedIn ? wishlist.length : 0;
 
     return (
         <WishlistContext.Provider 

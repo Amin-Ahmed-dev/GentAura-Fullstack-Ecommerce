@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2026 at 05:19 AM
+-- Generation Time: Apr 01, 2026 at 01:42 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -85,15 +85,6 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `created_at`) VALUES
-(6, 'Amin Ahmed', 'amin.a.hassan3574@gmail.com', '$2b$10$yIBApkH5Yh/0UAotF6ABCuLNNpsjYQEW0gWfseiY4mddbrGmr.ny.', '2026-03-30 17:24:10'),
-(7, 'Asser Waleed', 'asser4@gmail.com', '$2b$10$.HPRC3Ik80A8Zg.f19D2XuxfW21UXgWg.I59dqPmClwp/yYJ3KbOi', '2026-03-30 23:05:09'),
-(8, 'Amin Ahmed', 'sdsa@gmail.com', '$2b$10$57YV2kZlU9BH/o4UvoLSyew8/NdYSPrXg1zyVsX8HlT6F6Dbk/SbK', '2026-03-30 23:07:33');
-
---
 -- Indexes for dumped tables
 --
 
@@ -137,7 +128,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables

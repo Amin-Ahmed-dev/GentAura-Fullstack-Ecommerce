@@ -150,7 +150,10 @@ function Register() {
                                             <div className='input-icon d-flex align-items-center justify-content-center'>
                                                 <button
                                                     type='button'
-                                                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        setIsPasswordVisible(!isPasswordVisible)
+                                                    }}
                                                 >
                                                     {
                                                         isPasswordVisible ? <LuEye size={22} /> : <LuEyeOff size={22} />

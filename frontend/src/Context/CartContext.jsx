@@ -1,22 +1,37 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import { showToast, confirmAction } from '../utils/alertService';
+import { AuthContext } from "./AuthContext";
 
 export const CartContext = createContext()
 
 export const CartProvider = ({ children }) => {
-    // Cart State
-    const [cart, setCart] = useState(() => {
-        const savedCart = localStorage.getItem('gentaura_cart')
-        return savedCart ? JSON.parse(savedCart) : []
-    })
+    const { user, isLoggedIn } = useContext(AuthContext);
+    const [cart, setCart] = useState([]);
 
-    // Cart LocalStrorage
+    // A User-Specific Key
+    const cartKey = user ? `gentaura_cart_${user.id}` : null;
+
+    // Monitor User Changes
     useEffect(() => {
-        localStorage.setItem('gentaura_cart', JSON.stringify(cart))
-    }, [cart])
+        if (isLoggedIn && cartKey) {
+            const savedData = localStorage.getItem(cartKey);
+            setCart(savedData ? JSON.parse(savedData) : []);
+        } else {
+            setCart([]);
+        }
+    }, [isLoggedIn, cartKey]);
+
+    // Save Cart Data
+    useEffect(() => {
+        if (isLoggedIn && cartKey) {
+            localStorage.setItem(cartKey, JSON.stringify(cart));
+        }
+    }, [cart, isLoggedIn, cartKey]);
 
     // Add to cart
     const addToCart = (product, selectedSize) => {
+        if (!isLoggedIn) return;
+
         const existingItem = cart.find((item) => item.id === product.id && item.size === selectedSize)
 
         if (existingItem) {
@@ -69,11 +84,16 @@ export const CartProvider = ({ children }) => {
     // Clear Cart
     const clearCart = () => setCart([])
 
-    // Cart Counter Calculation
-    const cartCounter = cart.reduce((total, item) => total + item.quantity, 0)
+    let cartCounter = 0
+    let cartTotalPrice = 0
 
-    // Cart Total Price Calculation
-    const cartTotalPrice = cart.reduce((total, item) => total + (item.price * item.quantity), 0)
+    if (isLoggedIn) {
+        // Cart Counter Calculation
+        cartCounter = cart.reduce((total, item) => total + item.quantity, 0)
+
+        // Cart Total Price Calculation
+        cartTotalPrice = cart.reduce((total, item) => total + (item.price * item.quantity), 0)
+    }
 
     
     return (
